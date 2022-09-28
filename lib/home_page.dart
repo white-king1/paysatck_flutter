@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new, prefer_const_constructors_in_immutables, prefer_final_fields, duplicate_ignore, unnecessary_const, sized_box_for_whitespace, avoid_print, unnecessary_string_escapes
 
-
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_paystack/flutter_paystack.dart';
@@ -51,75 +50,57 @@ class _HomePageState extends State<HomePage> {
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            child: ListBody(children: <Widget>[
-              Row(
+            child: ListBody(
+              children: <Widget>[
+                Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Expanded(
-                      child: const Text('Initalize transaction from:'),
+                    const Text('Initalize transaction from:'),
+                    RadioListTile<int>(
+                      value: 0,
+                      groupValue: _radioValue,
+                      onChanged: _handleRadioValueChanged,
+                      title: const Text('Local'),
                     ),
-                    Expanded(
-                      child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            RadioListTile<int>(
-                              value: 0,
-                              groupValue: _radioValue,
-                              onChanged: _handleRadioValueChanged,
-                              title: const Text('Local'),
-                            ),
-                            RadioListTile<int>(
-                              value: 1,
-                              groupValue: _radioValue,
-                              onChanged: _handleRadioValueChanged,
-                              title: const Text('Server'),
-                            ),
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                border: const UnderlineInputBorder(),
-                                labelText: 'Card number',
-                              ),
-                              onSaved: (String? value) => _cardNumber = value,
-                            ),
-                          ]),
+                    RadioListTile<int>(
+                      value: 1,
+                      groupValue: _radioValue,
+                      onChanged: _handleRadioValueChanged,
+                      title: const Text('Server'),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        new Expanded(
-                          child: new TextFormField(
-                            decoration: const InputDecoration(
-                              border: const UnderlineInputBorder(),
-                              labelText: 'CVV',
-                            ),
-                            onSaved: (String? value) => _cvv = value,
-                          ),
-                        ),
-                        _horizontalSizeBox,
-                        new Expanded(
-                          child: new TextFormField(
-                            decoration: const InputDecoration(
-                              border: const UnderlineInputBorder(),
-                              labelText: 'Expiry Month',
-                            ),
-                            onSaved: (String? value) =>
-                                _expiryMonth = int.tryParse(value ?? ""),
-                          ),
-                        ),
-                        _horizontalSizeBox,
-                        new Expanded(
-                          child: new TextFormField(
-                            decoration: const InputDecoration(
-                              border: const UnderlineInputBorder(),
-                              labelText: 'Expiry Year',
-                            ),
-                            onSaved: (String? value) =>
-                                _expiryYear = int.tryParse(value ?? ""),
-                          ),
-                        )
-                      ],
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        labelText: 'Card number',
+                      ),
+                      onSaved: (String? value) => _cardNumber = value,
+                    ),
+                    new TextFormField(
+                      decoration: const InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        labelText: 'CVV',
+                      ),
+                      onSaved: (String? value) => _cvv = value,
+                    ),
+                    _horizontalSizeBox,
+                    new TextFormField(
+                      decoration: const InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        labelText: 'Expiry Month',
+                      ),
+                      onSaved: (String? value) =>
+                          _expiryMonth = int.tryParse(value ?? ""),
+                    ),
+                    _horizontalSizeBox,
+                    new TextFormField(
+                      decoration: const InputDecoration(
+                        border: const UnderlineInputBorder(),
+                        labelText: 'Expiry Year',
+                      ),
+                      onSaved: (String? value) =>
+                          _expiryYear = int.tryParse(value ?? ""),
                     ),
                     _verticalSizeBox,
                     Theme(
@@ -212,8 +193,10 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     )
-                  ]),
-            ]),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -245,13 +228,11 @@ class _HomePageState extends State<HomePage> {
 
     try {
       // ignore: use_build_context_synchronously
-      CheckoutResponse response = await plugin.checkout(
-        context,
-        method: _method,
-        charge: charge,
-        fullscreen: false,
-        logo: Image.asset("assets/icon.png")
-      );
+      CheckoutResponse response = await plugin.checkout(context,
+          method: _method,
+          charge: charge,
+          fullscreen: false,
+          logo: Image.asset("assets/icon.png"));
       print('Response = $response');
       setState(() => _inProgress = false);
       _updateStatus(response.reference, '$response');
@@ -311,7 +292,7 @@ class _HomePageState extends State<HomePage> {
 
   String _getReference() {
     String platform;
-          platform = 'Android';
+    platform = 'Android';
 
     // if (Platform.isIOS) {
     //   platform = 'iOS';
@@ -356,13 +337,13 @@ class _HomePageState extends State<HomePage> {
   Widget _getPlatformButton(String string, Function() function) {
     // is still in progress
     Widget widget;
-     widget = new ElevatedButton(
-        onPressed: function,
-        child: new Text(
-          string.toUpperCase(),
-          style: const TextStyle(fontSize: 17.0),
-        ),
-      );
+    widget = new ElevatedButton(
+      onPressed: function,
+      child: new Text(
+        string.toUpperCase(),
+        style: const TextStyle(fontSize: 17.0),
+      ),
+    );
     // if (Platform.isIOS) {
     //   widget = new CupertinoButton(
     //     onPressed: function,
